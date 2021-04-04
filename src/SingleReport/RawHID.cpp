@@ -81,6 +81,20 @@ int RawHID_::getDescriptor(USBSetup& setup)
 	return USB_SendControl(TRANSFER_PGM, _hidReportDescriptorRawHID, sizeof(_hidReportDescriptorRawHID));
 }
 
+
+uint8_t RawHID_::getShortName(char *name)
+{
+    if(serial) {
+        for(byte i=0; i<strlen_P(serial); i++) {
+            name[i] = pgm_read_byte_near(serial + i);
+        }
+        return strlen_P(serial);
+    }
+    else {
+		return 0;
+    }
+}
+
 bool RawHID_::setup(USBSetup& setup)
 {
 	if (pluggedInterface != setup.wIndex) {

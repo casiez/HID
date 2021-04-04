@@ -118,6 +118,10 @@ public:
 		dataAvailable = -1;
 	}
 
+    void setSerial(const char* s) {
+        serial = s;
+    }
+
 	virtual int available(void){
 		if(dataAvailable < 0){
 			return 0;
@@ -157,11 +161,14 @@ public:
 		return USB_Send(pluggedEndpoint | TRANSFER_RELEASE, buffer, size);
 	}
 
+	uint8_t getShortName(char* name);
+
 protected:
     // Implementation of the PUSBListNode
     int getInterface(uint8_t* interfaceCount);
     int getDescriptor(USBSetup& setup);
     bool setup(USBSetup& setup);
+    
 
     EPTYPE_DESCRIPTOR_SIZE epType[1];
     uint8_t protocol;
@@ -174,5 +181,6 @@ protected:
 
 	uint8_t* featureReport;
 	int featureLength;
+	const char *serial;
 };
 extern RawHID_ RawHID;
